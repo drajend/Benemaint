@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Benemaint>
+    <Policy>
+      <AdditionalAction>
+        <Item key="ChargerPolicyURL" value="http://10.97.67.208:3099/ChargerCheck/?cocd={0}&amp;poln={1}"/>
+      </AdditionalAction>
+  </Policy>
+
+  <Agent>
+    <AdditionalAction>
+      <Item key="" value=""/>
+    </AdditionalAction>
+  </Agent>
+</Benemaint>

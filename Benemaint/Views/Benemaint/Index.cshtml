@@ -1,0 +1,302 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        font-size: 1.2em;
+    }
+
+    div.dataTables_wrapper {
+        width: 400px;
+        margin: 0 0;
+    }
+
+    #dataPolicy3_wrapper {width: 300px;}
+    #dataPolicy3_paginate{display:none;}
+    #dataPolicy3_info{display:none;}
+   #parent{padding: 5% 0;}
+   #child {padding: 50%;}
+   .countTB {width: 15px; height: 20px}
+
+</style>
+
+<div class="panel-body" style="padding-right: 2px; padding-left: 2px; padding-top:1px; padding-bottom:2px">
+ 
+    <div id="resultSearch" hidden>
+        
+        <div id="panel-body nopadding">
+            
+            <div>
+                <h4 class="hrCustom">Participant/Account Info</h4>
+                <hr class="hrwise" />
+                <div class="input-group input-group-sm form-inline panel nomarginbottom">
+
+                    <span class="input-group-addon" style="width: 14.4%; line-height: 0px !important; font-size: 11px;">Name</span>
+                    <input class="form-control" id="fldName" style="font-size: 11px; width: 99.9%; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="50">
+                    <span class="input-group-addon" style="width: 14.1%; line-height: 0px !important; font-size: 11px;">SSN</span>
+                    <input class="form-control" id="fldSSN" style="font-size: 11px; width: 99.5%; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="35">
+                </div>
+
+                <div style="width:100%;text-align:center">
+                    <input type="radio" name="applyTo" value="AnnuityAccountsOnly" onclick="javascript:annuityAccounts();" style="margin-left:30px"> Annuity Accounts Only
+                    <input type="radio" name="applyTo" value="MutualFundAccountsOnly" onclick="javascript:mutualFundAccount();" style="margin-left:30px"> MutualFund Accounts Only
+                    <input type="radio" name="applyTo" value="SpecificAccounts" onclick="javascript:specifiedAccounts();" style="margin-left:30px" checked> Specific Accounts
+                </div>
+
+                <div style="float:left;width:40%">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap no-footer" id="dataTables-example_wrapper">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <table class="display" string id="dataPolicy" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Account</th>
+                                            <th>Product</th>
+                                            <th>GrpNo</th>
+                                            <th>Plan</th>
+                                            <th>Sub</th>
+                                            <th>SSN Type</th>
+                                            <th>Account Code</th>
+                                            <th>Participant Name</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="float:left;width:10%;align-items:center;vertical-align:middle">
+                    <div id="parent">
+                        <div id="child">
+                            <button id="btnAdd" type="button" data-placement="bottom" data-toggle="tooltip" title="" class="btn btn-info btn-sm autoFontSize"> &nbsp;&nbsp; Add &nbsp;&nbsp;&nbsp; </button>
+                            <button id="btnRemove" type="button" data-placement="bottom" data-toggle="tooltip" title="" class="btn btn-warning btn-sm autoFontSize"> Remove </button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div style="float:right;width:40%;margin-left:-10px">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap no-footer" id="dataTables-example_wrapper">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <table class="display" string id="dataPolicy2" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Account</th>
+                                            <th>Product</th>
+                                            <th>GrpNo</th>
+                                            <th>Plan</th>
+                                            <th>Sub</th>
+                                            <th>SSN Type</th>
+                                            <th>Account Code</th>
+                                            <th>Participant Name</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div style="width:100%;border:1px solid black; display:inline-block ">
+                <div style="width:30%;float:left; ">
+                   
+                    <div>
+                        <h4 class="hrCustom">Percent Totals</h4>
+                        <hr class="hrwise" />
+                        <div style="width:200px" class="dataTables_wrapper form-inline dt-bootstrap no-footer " id="dataTables-example_wrapper">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <table class="display" string id="dataPolicy3" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th>Sort</th>
+                                                <th>Primary</th>
+                                                <th>Contingent</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                    <div id="divTotal"><span id="spTotal" style="font-weight:bold;"></span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="width:70%;float:right;border-left:1px solid black;">
+                    <div class="panel panel-body" style="padding: 0px !important;" data-bind="foreach: Contract">
+                        <div>
+                            <div class="input-group input-group-sm form-inline panel nomarginbottom">
+                                <button id="btnFirst" type="button" data-placement="bottom" data-toggle="tooltip" title="" class="btn btn-info btn-sm autoFontSize"> &lt;&lt; </button>
+                                <button id="btnPrev" type="button" data-placement="bottom" data-toggle="tooltip" title="" class="btn btn-info btn-sm autoFontSize"> &lt; </button>
+                                <input  id="fldCount" class="countTB" disabled="disabled" style="vertical-align:middle">
+                                <button id="btnNext" type="button" data-placement="bottom" data-toggle="tooltip" title="" class="btn btn-warning btn-sm autoFontSize"> &gt; </button>
+                                <button id="btnLast" type="button" data-placement="bottom" data-toggle="tooltip" title="" class="btn btn-warning btn-sm autoFontSize"> &gt;&gt; </button>
+
+                            </div>
+                            <div class="input-group input-group-sm form-inline panel nomarginbottom">
+                                <span class="input-group-addon" style="width: 100%; line-height: 0px !important; font-size: 11px;">Participant Beneficiary</span>
+                            </div>
+                            <div class="input-group input-group-sm form-inline panel nomarginbottom">
+
+                                <span class="input-group-addon" style="width: 80px; min-width:82px;line-height: 0px !important; font-size: 11px;">Name</span>
+                                <input class="form-control" id="fldPName" style="font-size: 11px; width: 300px; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="50">
+                                <span class="input-group-addon" style="width: 80px; min-width:100px; line-height: 0px !important; font-size: 11px;">Address Line 1</span>
+                                <input class="form-control" id="fldPAddress1" style="font-size: 11px; width: 260px; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="35">
+                            </div>
+                            <div class="input-group input-group-sm form-inline panel nomarginbottom">
+
+                                <span class="input-group-addon" style="width: 80px; min-width:82px;line-height: 0px !important; font-size: 11px;">SSN</span>
+                                <input class="form-control" id="fldPSSN" style="font-size: 11px; width: 110px; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="50">
+
+                                <span class="input-group-addon" style="width: 80px; min-width:80px; line-height: 0px !important; font-size: 11px;">DOB</span>
+                                <input class="form-control" id="fldPDOB" style="font-size: 11px; width: 110px; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="35">
+                                
+                                <span class="input-group-addon" style="width: 80px; min-width:100px;line-height: 0px !important; font-size: 11px;">Address Line 2</span>
+                                <input class="form-control" id="fldPAddress2" style="font-size: 11px; width: 260px; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="35">
+                            </div>
+                            <div class="input-group input-group-sm form-inline panel nomarginbottom">
+
+                               <span class="input-group-addon" style="width: 80px; min-width:80px; line-height: 0px !important; font-size: 11px;">Relationship</span>
+                                @*<input class="form-control" id="fldPRelationship" style="font-size: 11px; width: 99.5%; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="35">*@
+                                <select class="form-control" id="fldPRelationship" style="font-size: 11px; width: 120px; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="50">
+                                    <option value="SPOUSE">SPOUSE</option>
+                                    <option value="NON-SPOUSE">NON-SPOUSE</option>
+                                    <option value="TRUST">TRUST</option>
+                                    <option value="OTHERS">OTHERS</option>
+                                </select>
+                                <span class="input-group-addon" style="width: 80px; min-width:80px; line-height: 0px !important; font-size: 11px;">City</span>
+                                <input class="form-control" id="fldPCity" style="font-size: 11px; width: 120px; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="50">
+                                <span class="input-group-addon" style="width: 80px; min-width:80px; line-height: 0px !important; font-size: 11px;">State</span>
+                                <input class="form-control" id="fldPState" style="font-size: 11px; width: 120px; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="35">
+
+                               
+                            </div>
+                            @*<div class="input-group input-group-sm form-inline panel nomarginbottom">
+                              
+                            </div>*@
+                            <div class="input-group input-group-sm form-inline panel nomarginbottom">
+                                
+                                <span class="input-group-addon" style="width: 80px; min-width:82px; line-height: 0px !important; font-size: 11px;">Percent</span>
+                                <input class="form-control" id="fldPPercentage" style="font-size: 11px; width: 120px; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="50">
+
+                                <span class="input-group-addon" style="width: 80px; min-width:80px; line-height: 0px !important; font-size: 11px;">Zip</span>
+                                <input class="form-control" id="fldPZip" style="font-size: 11px; width: 120px; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="50">
+                                <span class="input-group-addon" style="width: 80px; min-width:80px; line-height: 0px !important; font-size: 11px;">Foreign Zip</span>
+                                <input class="form-control" id="fldPForeignZip" style="font-size: 11px; width:120px; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="35">
+
+
+                            </div>
+                            @*<div class="input-group input-group-sm form-inline panel nomarginbottom">
+                                 <span class="input-group-addon" style="width: 50%; line-height: 0px !important; font-size: 11px;"></span>
+                            </div>*@
+
+                        </div>
+
+
+                        @*<div>
+                        <div class="input-group input-group-sm form-inline panel nomarginbottom">
+
+                        </div>
+                    </div>*@
+                    </div>
+
+                    <div class="panel panel-body" style="padding: 0px !important;" data-bind="foreach: Contract">
+                        <div>
+                            <div class="input-group input-group-sm form-inline panel nomarginbottom">
+                                <span class="input-group-addon" style="width: 100%; line-height: 0px !important; font-size: 11px;">Contingent Beneficiary</span>
+                            </div>
+                            <div class="input-group input-group-sm form-inline panel nomarginbottom">
+
+                                <span class="input-group-addon" style="width: 80px; min-width:82px; line-height: 0px !important; font-size: 11px;">Name</span>
+                                <input class="form-control" id="fldCName" style="font-size: 11px; width: 300px; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="50">
+                                <span class="input-group-addon" style="width: 80px; min-width:100px; line-height: 0px !important; font-size: 11px;">Address Line 1</span>
+                                <input class="form-control" id="fldCAddress1" style="font-size: 11px; width: 260px; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="35">
+                            </div>
+                            <div class="input-group input-group-sm form-inline panel nomarginbottom">
+
+                                <span class="input-group-addon" style="width: 80px; min-width:82px; line-height: 0px !important; font-size: 11px;">SSN</span>
+                                <input class="form-control" id="fldCSSN" style="font-size: 11px; width: 110px; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="50">
+                                <span class="input-group-addon" style="width: 80px; min-width:80px; line-height: 0px !important; font-size: 11px;">DOB</span>
+                                <input class="form-control" id="fldCDOB" style="font-size: 11px; width: 110px; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="50">
+                                <span class="input-group-addon" style="width: 80px; min-width:100px; line-height: 0px !important; font-size: 11px;">Address Line 2</span>
+                                <input class="form-control" id="fldCAddress2" style="font-size: 11px; width: 260px; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="35">
+                            </div>
+                            <div class="input-group input-group-sm form-inline panel nomarginbottom">
+
+                                <span class="input-group-addon" style="width: 80px; min-width:80px; line-height: 0px !important; font-size: 11px;">Relationship</span>
+                                <select class="form-control" id="fldCRelationship" style="font-size: 11px; width: 120px; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="50">
+                                    <option value="SPOUSE">SPOUSE</option>
+                                    <option value="NON-SPOUSE">NON-SPOUSE</option>
+                                    <option value="TRUST">TRUST</option>
+                                    <option value="OTHERS">OTHERS</option>
+                                </select>
+                                
+                                 <span class="input-group-addon" style="width: 80px; min-width:80px; line-height: 0px !important; font-size: 11px;">City</span>
+                                <input class="form-control" id="fldCCity" style="font-size: 11px; width: 120px; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="50">
+                                <span class="input-group-addon" style="width:80px; min-width:80px; line-height: 0px !important; font-size: 11px;">State</span>
+                                <input class="form-control" id="fldCState" style="font-size: 11px; width: 120px; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="35">
+                            </div>
+                           
+                            <div class="input-group input-group-sm form-inline panel nomarginbottom">
+                                <span class="input-group-addon" style="width: 80px; min-width:82px; line-height: 0px !important; font-size: 11px;">Percent</span>
+                                <input class="form-control" id="fldCPercentage" style="font-size: 11px; width: 120px; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="50">
+
+                                <span class="input-group-addon" style="width: 80px; min-width:80px; line-height: 0px !important; font-size: 11px;">Zip</span>
+                                <input class="form-control" id="fldCZip" style="font-size: 11px; width: 120px; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="50">
+                                <span class="input-group-addon" style="width: 80px; min-width:80px; line-height: 0px !important; font-size: 11px;">Foreign Zip</span>
+                                <input class="form-control" id="fldCForeignZip" style="font-size: 11px; width: 120px; padding-top: 0px !important; padding-bottom: 0px !important;" type="text" maxlength="35">
+                            </div>
+
+                            <div>
+                                <div style="text-align:center">
+                                    <button id="btnSave" type="button" data-placement="bottom" data-toggle="tooltip" title="" class="btn btn-info btn-sm autoFontSize"> Save </button>
+                                    <button id="btnCancel" type="button" data-placement="bottom" data-toggle="tooltip" title="" class="btn btn-warning btn-sm autoFontSize"> Cancel </button>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div>
+                            <div class="input-group input-group-sm form-inline panel nomarginbottom">
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            
+           
+         <hr class="hrwise" />
+            <div class="panel-body paddingTop">
+                <div class="row">
+                    <div class="col-xs-8 aiInfo" id="info" hidden>
+                    </div>
+                    <div class="col-xs-offset-10" style="right: 5px; bottom: 5px; position: absolute;">
+                        @*<button id="btnOk" type="button" data-placement="bottom" data-toggle="tooltip" title="" class="btn btn-info btn-sm autoFontSize">Ok</button>*@
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-10 .aiWaring" id="warning" hidden>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-10 aiError" id="error" hidden>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<div id="awdLOBFields" hidden>@ViewBag.LOBFields</div>
+@Scripts.Render("~/bundles/Benemaint")
+
+

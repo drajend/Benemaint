@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LOBField>
+
+   <ValicLOBFields>
+    <Item key="PTP_ACT_IDT" value=""/>
+    <Item key="PTP_IDT_TYP_COD" value=""/>
+    <Item key="PTP_ACT_STA_COD" value=""/>
+    <Item key="PARTICIPANT_NAME" value=""/>
+     <Item key="PRODUCT" value=""/>
+    <Item key="GROUP_NUM" value=""/>
+    <Item key="PLAN_NUM" value=""/>
+    <Item key="SUBGROUP_NUM" value=""/>
+     
+  </ValicLOBFields>
+</LOBField>
+      	
+      	
